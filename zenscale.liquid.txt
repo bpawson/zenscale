@@ -1,0 +1,210 @@
+<style>
+/* ===================== BASE ===================== */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: black;
+}
+#zenscale-root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: black;
+}
+#zenscale-scroll {
+  width: 100%;
+  height: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: relative;
+}
+#zenscale-stage {
+  height: auto;
+  transform-origin: top center;
+}
+#zenscale-content,
+#zenscale-stage-wrap {
+  width: 100%;
+  height: auto;
+  position: relative;
+}
+/* ===================== DESKTOP PROFILE ===================== */
+@media (min-width: 700px) {
+  :root { --design-width: 1530px; }
+  #zenscale-stage { width: var(--design-width); }
+}
+/* ===================== MOBILE PROFILE ===================== */
+@media (max-width: 699px) {
+  :root { --design-width: 400px; }
+  #zenscale-stage { width: var(--design-width); }
+}
+</style>
+
+<script>
+  /* ======= GLOBAL ZENSCALE CONFIG (edit only these) ======= */
+  const ZENSCALE_MIN_WIDTH1 = 700;     // scaling starts here
+  const ZENSCALE_DESIGN_W1  = 1530;    // your root layout width
+  const ZENSCALE_STRENGTH1  = 0.5;     // DO NOT CHANGE (alignment physics)
+</script>
+<script>
+if (window.innerWidth > ZENSCALE_MIN_WIDTH1) {
+
+  /* ===== SCALE ===== */
+  document.addEventListener("DOMContentLoaded", () => {
+
+    function applyScale() {
+      const vw = window.innerWidth;
+      const scale = vw / ZENSCALE_DESIGN_W1;
+
+      const stage = document.getElementById("zenscale-stage");
+      if (stage) stage.style.transform = `scale(${scale})`;
+    }
+
+    applyScale();
+    window.addEventListener("resize", applyScale);
+  });
+
+  /* ===== ALIGNMENT ===== */
+  document.addEventListener("DOMContentLoaded", () => {
+
+    function applyAlignment() {
+      const vw = window.innerWidth;
+      const scale = vw / ZENSCALE_DESIGN_W1;
+      const offset = (vw - ZENSCALE_DESIGN_W1) * ZENSCALE_STRENGTH1;
+
+      const stage = document.getElementById("zenscale-stage");
+      if (stage) stage.style.transform =
+        `translateX(${offset}px) scale(${scale})`;
+    }
+
+    applyAlignment();
+    window.addEventListener("resize", applyAlignment);
+  });
+
+  /* ===== HEIGHT PERFECTION ===== */
+  document.addEventListener("DOMContentLoaded", () => {
+    const stage = document.getElementById("zenscale-stage");
+    const wrap  = document.getElementById("zenscale-stage-wrap");
+
+    function updateStageHeight() {
+      if (!stage || !wrap) return;
+
+      const rect = stage.getBoundingClientRect();
+      const scaledHeight = rect.height;
+      const viewportH = window.innerHeight;
+
+      const clampedHeight = Math.min(scaledHeight, viewportH);
+
+      wrap.style.height = clampedHeight + "px";
+      document.documentElement.style
+        .setProperty("--scroll-height", clampedHeight + "px");
+    }
+
+    function applyScale() {
+      const vw = window.innerWidth;
+      const scale = vw / ZENSCALE_DESIGN_W1;
+      const offset = (vw - ZENSCALE_DESIGN_W1) * ZENSCALE_STRENGTH1;
+
+      stage.style.transform =
+        `translateX(${offset}px) scale(${scale})`;
+
+      requestAnimationFrame(updateStageHeight);
+    }
+
+    applyScale();
+    window.addEventListener("resize", applyScale);
+  });
+
+} // END > ZENSCALE_MIN_WIDTH1
+</script>
+
+<script>
+  /* ======= GLOBAL ZENSCALE MOBILE CONFIG (edit only these) ======= */
+  const ZENSCALE_MAX_WIDTH2 = 699;     // scaling applies ONLY below this
+  const ZENSCALE_DESIGN_W2  = 400;     // your 400px root layout width
+  const ZENSCALE_STRENGTH2  = 0.5;     // DO NOT CHANGE (alignment physics)
+</script>
+<script>
+if (window.innerWidth < ZENSCALE_MAX_WIDTH2) {
+
+  /* ===== MOBILE SCALE ===== */
+  document.addEventListener("DOMContentLoaded", () => {
+
+    function applyScaleMobile() {
+      const vw = window.innerWidth;
+      const scale = vw / ZENSCALE_DESIGN_W2;
+
+      const stage = document.getElementById("zenscale-stage");
+      if (stage) stage.style.transform = `scale(${scale})`;
+    }
+
+    applyScaleMobile();
+    window.addEventListener("resize", applyScaleMobile);
+  });
+
+  /* ===== MOBILE ALIGNMENT ===== */
+  document.addEventListener("DOMContentLoaded", () => {
+
+    function applyAlignmentMobile() {
+      const vw = window.innerWidth;
+      const scale = vw / ZENSCALE_DESIGN_W2;
+      const offset = (vw - ZENSCALE_DESIGN_W2) * ZENSCALE_STRENGTH2;
+
+      const stage = document.getElementById("zenscale-stage");
+      if (stage) stage.style.transform =
+        `translateX(${offset}px) scale(${scale})`;
+    }
+
+    applyAlignmentMobile();
+    window.addEventListener("resize", applyAlignmentMobile);
+  });
+
+  /* ===== MOBILE HEIGHT PERFECTION ===== */
+  document.addEventListener("DOMContentLoaded", () => {
+    const stage = document.getElementById("zenscale-stage");
+    const wrap  = document.getElementById("zenscale-stage-wrap");
+
+    function updateStageHeightMobile() {
+      if (!stage || !wrap) return;
+
+      const rect = stage.getBoundingClientRect();
+      const scaledHeight = rect.height;
+      const viewportH = window.innerHeight;
+
+      const clampedHeight = Math.min(scaledHeight, viewportH);
+
+      wrap.style.height = clampedHeight + "px";
+      document.documentElement.style
+        .setProperty("--scroll-height", clampedHeight + "px");
+    }
+
+    function applyScaleMobileFull() {
+      const vw = window.innerWidth;
+      const scale = vw / ZENSCALE_DESIGN_W2;
+      const offset = (vw - ZENSCALE_DESIGN_W2) * ZENSCALE_STRENGTH2;
+
+      stage.style.transform =
+        `translateX(${offset}px) scale(${scale})`;
+
+      requestAnimationFrame(updateStageHeightMobile);
+    }
+
+    applyScaleMobileFull();
+    window.addEventListener("resize", applyScaleMobileFull);
+  });
+
+} // END < ZENSCALE_MAX_WIDTH2
+</script>
+
+<style>
+  /* Make ZenScale layers transparent so body background shows through */
+#zenscale-root,
+#zenscale-scroll,
+#zenscale-stage,
+#zenscale-content {
+  background: transparent !important;
+}
+</style>
